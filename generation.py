@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import sys
 
 
 def create_phantom1(height, width):
@@ -19,7 +18,7 @@ def create_phantom2(height, width):
 def create_phantom3(height, width):
     image3 = np.zeros((height, width))
     image3[height // 4:height // 2, width // 9:width // 3] = 150
-    image3[height// 2:height // 1, width // 2:width // 1] = 255
+    image3[height// 2:height // 1, width // 3:width // 2] = 255
     image3[height // 13:height // 5, width // 5:width // 1] = 90
     return image3
 
@@ -51,7 +50,22 @@ def t2(image3):
                 shepp_t2[i][j] = 3000 // 100
     return shepp_t2
 
+def pd(image3):
+    shepp_pd = np.zeros((width1, height1))
+    for i in range(width1):
+        for j in range(height1):
+            if image3[i][j] == 255:  ### white matter
+                shepp_pd[i][j] = 500//10
+            elif image3[i][j] == 150: ### gray matter
+                shepp_pd[i][j] = 900//5
+            elif image3[i][j] == 90:  ### fat
+                shepp_pd[i][j] =  240 //3
+            elif image3[i][j] == 0: ### water
+                shepp_pd[i][j] = 3000//100
+    return shepp_pd
 
+def t1_t2_graph (i,j):
+    return t1_mat[i][j],t2_mat[i][j]
 
 height1, width1 = 512, 512 ####### change size from here
 
@@ -59,10 +73,13 @@ height1, width1 = 512, 512 ####### change size from here
 image = create_phantom1(height1, width1)
 image2 = create_phantom2(height1, width1)
 image3 = create_phantom3(height1, width1)
-t1_we = t1(image3)
-t2_we = t2(image3)
-cv2.imwrite('image1.jpg', image)
-cv2.imwrite('image2.jpg', image2)
-cv2.imwrite('image3.jpg', image3)
-cv2.imwrite('image_t1.jpg', t1_we)
-cv2.imwrite('image_t2.jpg', t2_we)
+t1_mat = t1(image3)
+t2_mat= t2(image3)
+pd_mat= pd(image3)
+
+cv2.imwrite('image1.png', image)
+cv2.imwrite('image2.png', image2)
+cv2.imwrite('image3.png', image3)
+# cv2.imwrite('image_t1.jpg', t1_mat)
+# cv2.imwrite('image_t2.jpg', t2_mat)
+# cv2.imwrite('image_pd.jpg', pd_mat)

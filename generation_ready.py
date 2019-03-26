@@ -58,6 +58,23 @@ def t1_t2_graph(i, j):
   return t1_mat[i][j], t2_mat[i][j]
 
 
+def wheelEvent(self, event):
+    increaseFactor = 10
+    decreaseFactor = -10
+
+    if event.angleDelta().y() > 0:
+        zoomFactor = increaseFactor
+        for i in range(image.shape[0]):
+            for j in range(image.shape[1]):
+                if image[i][j] < 245:
+                    image[i][j] = image[i][j] + increaseFactor
+    else:
+        zoomFactor = decreaseFactor
+        for i in range(image.shape[0]):
+            for j in range(image.shape[1]):
+                if image[i][j] > 10:
+                    image[i][j] = image[i][j] - decreaseFactor
+
 
 
 

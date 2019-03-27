@@ -3,7 +3,7 @@ import numpy as np
 
 
 def t1(image3):
-    shepp_t1 = np.zeros((image3.shape[0],image3.shape[1]),dtype=np.uint8)
+    shepp_t1 = np.zeros((image3.shape[0], image3.shape[1]), dtype=np.uint8)
     for i in range(image3.shape[0]):
         for j in range(image3.shape[1]):
             if image3[i][j] == 255:  # white matter
@@ -15,12 +15,12 @@ def t1(image3):
             elif image3[i][j] == 0:  # water
                 shepp_t1[i][j] = 3000//100
             else:
-                shepp_t1[i][j] = 100
+                shepp_t1[i][j] = 3000 // 100
     return shepp_t1
 
 
 def t2(image3):
-    shepp_t2 = np.zeros((image3.shape[0],image3.shape[1]))
+    shepp_t2 = np.zeros((image3.shape[0], image3.shape[1]))
     for i in range(image3.shape[0]):
         for j in range(image3.shape[1]):
             if image3[i][j] == 255:  # white matter
@@ -32,13 +32,13 @@ def t2(image3):
             elif image3[i][j] == 0:  # water
                 shepp_t2[i][j] = 3000 // 100
             else:
-                shepp_t2[i][j] = 50
+                shepp_t2[i][j] = 3000 // 100
 
     return shepp_t2
 
 
 def pd(image3):
-    shepp_pd = np.zeros((image3.shape[0],image3.shape[1]))
+    shepp_pd = np.zeros((image3.shape[0], image3.shape[1]))
     for i in range(image3.shape[0]):
         for j in range(image3.shape[1]):
             if image3[i][j] == 255:  # white matter
@@ -50,12 +50,13 @@ def pd(image3):
             elif image3[i][j] == 0:  # water
                 shepp_pd[i][j] = 3000//100
             else:
-                shepp_pd[i][j] = 30
+                shepp_pd[i][j] = 3000 // 100
 
     return shepp_pd
 
+
 def t1_t2_graph(i, j):
-  return t1_mat[i][j], t2_mat[i][j]
+    return t1_mat[i][j], t2_mat[i][j]
 
 
 def wheelEvent(self, event):
@@ -74,8 +75,3 @@ def wheelEvent(self, event):
             for j in range(image.shape[1]):
                 if image[i][j] > 10:
                     image[i][j] = image[i][j] - decreaseFactor
-
-
-
-
-

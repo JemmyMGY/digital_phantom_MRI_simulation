@@ -56,22 +56,25 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.getPhantom()
 
     def getPhantom(self):
-        if self.fileName:
-            print(self.fileName)
-            size = int(self.ui.cbSize.currentText())
-            self.cvImg = cv2.imread(self.fileName,0)
-            self.cvImg = cv2.resize(self.cvImg,(size,size))
-            self.cvImgT1 = properties.t1(self.cvImg)
-            self.cvImgT2 = properties.t2(self.cvImg)
-            prop = self.ui.cbProperty.currentText()
-            if prop=='T1':
-                self.cvImg = self.cvImgT1
-            elif prop=='T2':
-                self.cvImg = self.cvImgT2
-            else:
-                self.cvImg = properties.pd(self.cvImg)
-            print(type(self.cvImg))
-            self.displayPhantom(self.cvImg)
+        try:
+            if self.fileName:
+                print(self.fileName)
+                size = int(self.ui.cbSize.currentText())
+                self.cvImg = cv2.imread(self.fileName,0)
+                self.cvImg = cv2.resize(self.cvImg,(size,size))
+                self.cvImgT1 = properties.t1(self.cvImg)
+                self.cvImgT2 = properties.t2(self.cvImg)
+                prop = self.ui.cbProperty.currentText()
+                if prop=='T1':
+                    self.cvImg = self.cvImgT1
+                elif prop=='T2':
+                    self.cvImg = self.cvImgT2
+                else:
+                    self.cvImg = properties.pd(self.cvImg)
+                print(type(self.cvImg))
+                self.displayPhantom(self.cvImg)
+        except:
+            pass
         
                 
     def displayPhantom(self, image):

@@ -14,7 +14,7 @@ def t1(in_image):
             elif in_image[i][j] == 0:  ### water
                 shepp_t1[i][j] = 255
             else:
-                shepp_t1[i][j] = 30
+                shepp_t1[i][j] = 255
     return shepp_t1
 
 
@@ -31,7 +31,7 @@ def t2(in_image):
             elif in_image[i][j] == 0:  ### water
                 shepp_t2[i][j] = 200
             else:
-                shepp_t2[i][j] = 100
+                shepp_t2[i][j] = 200
     return shepp_t2
 
 def pd(in_image):
@@ -47,7 +47,7 @@ def pd(in_image):
             elif in_image[i][j] == 0:  # water
                 shepp_pd[i][j] = 30
             else:
-                shepp_pd[i][j] = 90
+                shepp_pd[i][j] = 30
 
     return shepp_pd
 

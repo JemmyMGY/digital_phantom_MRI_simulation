@@ -200,19 +200,92 @@ class ApplicationWindow(QtWidgets.QMainWindow):
 
     def wheelEvent(self, event):
         image = self.cvImg
-        increaseFactor = 10
-        decreaseFactor = -10
+        increaseFactor = 5
+        decreaseFactor = -5
+
         if event.angleDelta().y() > 0:
             for i in range(image.shape[0]):
                 for j in range(image.shape[1]):
-                    if image[i][j] < 245:
-                        image[i][j] = image[i][j] + increaseFactor
+                    if self.ui.cbProperty.currentText() == 'T1':
+                        if image[i][j] >= 210 and image[i][j] < 255:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 150 and image[i][j] < 180:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 70  and image[i][j] < 100:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 0 and image[i][j] < 30:
+                            image[i][j] = image[i][j] + increaseFactor
+                    elif self.ui.cbProperty.currentText() == 'T2':
+                        if image[i][j] > 240 and image[i][j] <= 255:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 200 and image[i][j] < 230:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 50 and image[i][j] < 80:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 0 and image[i][j] < 30:
+                            image[i][j] = image[i][j] + increaseFactor
+                    elif self.ui.cbProperty.currentText() == 'PD':
+                        if image[i][j] >= 140 and image[i][j] < 170:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 120 and image[i][j] < 135:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 50 and image[i][j] < 80:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 30 and image[i][j] < 45:
+                            image[i][j] = image[i][j] + increaseFactor
+                    else:
+                        if image[i][j] >= 140 and image[i][j] < 170:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 120 and image[i][j] < 135:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 50 and image[i][j] < 80:
+                            image[i][j] = image[i][j] + increaseFactor
+                        elif image[i][j] >= 30 and image[i][j] < 45:
+                            image[i][j] = image[i][j] + increaseFactor
+
+
         else:
             for i in range(image.shape[0]):
                 for j in range(image.shape[1]):
-                    if image[i][j] > 10:
-                        image[i][j] = image[i][j] - decreaseFactor
+                    if self.ui.cbProperty.currentText() == 'T1':
+                        if image[i][j] > 210 and image[i][j] <= 255:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 150 and image[i][j] <= 180:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 70 and image[i][j] <= 100:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 0 and image[i][j] <= 30:
+                            image[i][j] = image[i][j] + decreaseFactor
+                    elif self.ui.cbProperty.currentText() == 'T2':
+                        if image[i][j] > 240 and image[i][j] <= 255:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 200 and image[i][j] <= 230:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 50 and image[i][j] <= 80:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 0 and image[i][j] <= 30:
+                            image[i][j] = image[i][j] + decreaseFactor
+                    elif self.ui.cbProperty.currentText() == 'PD':
+                        if image[i][j] > 140 and image[i][j] <= 170:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 120 and image[i][j] <= 135:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 50 and image[i][j] <= 80:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 30 and image[i][j] <= 45:
+                            image[i][j] = image[i][j] + decreaseFactor
+                    else:
+                        if image[i][j] > 140 and image[i][j] <= 170:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 120 and image[i][j] <= 135:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 50 and image[i][j] <= 80:
+                            image[i][j] = image[i][j] + decreaseFactor
+                        elif image[i][j] > 30 and image[i][j] <= 45:
+                            image[i][j] = image[i][j] + decreaseFactor
+
         self.displayPhantom(image)
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

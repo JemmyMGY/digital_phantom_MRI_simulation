@@ -1,4 +1,3 @@
-
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QFileDialog
@@ -11,6 +10,7 @@ import cv2
 import properties
 import kspace
 import qimage2ndarray
+from PIL import Image, ImageEnhance 
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
@@ -20,6 +20,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.pbBrowse.clicked.connect(self.pbBrowse_clicked)
+        self.ui.pbStart.clicked.connect(self.pbStart_clicked)
         self.ui.cbSize.currentTextChanged.connect(self.cbSize_currentTextChanged)
         self.ui.cbProperty.currentTextChanged.connect(self.cbProperty_currentTextChanged)
         self.ui.sbGraphs.valueChanged.connect(self.sbGraphs_valueChanged)
@@ -56,6 +57,8 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.fileName, _filter = QFileDialog.getOpenFileName(self, "Open", "", "Filter -- All Files (*);;Python Files (*.py)")
         self.ui.gvDecay.clear()
         self.ui.gvRecovery.clear()
+        self.factorB = 0
+        self.factorC = 0
         self.getPhantom()
 
     def getPhantom(self):
@@ -83,13 +86,13 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         except:
             pass
         
-    def rfPulse(self):
+    def pbStart_clicked(self):
         te = self.ui.sbTE.value()
         tr = self.ui.sbTR.value()
         fa = self.ui.sbFA.value()
-        t1 = cv2.resize(self.cvImgT1,(64,64))
-        t2 = cv2.resize(self.cvImgT2,(64,64))
-        pd = cv2.resize(self.cvImgPD,(64,64))
+        t1 = cv2.resize(self.cvImgT1,(16,16))
+        t2 = cv2.resize(self.cvImgT2,(16,16))
+        pd = cv2.resize(self.cvImgPD,(16,16))
         QtWidgets.QApplication.processEvents()
         image = kspace.flip(te, tr, t1, t2, pd, fa)
         qimg = QImage()
@@ -199,93 +202,30 @@ class ApplicationWindow(QtWidgets.QMainWindow):
             pass'''
 
     def wheelEvent(self, event):
-        image = self.cvImg
-        increaseFactor = 5
-        decreaseFactor = -5
-
-        if event.angleDelta().y() > 0:
-            for i in range(image.shape[0]):
-                for j in range(image.shape[1]):
-                    if self.ui.cbProperty.currentText() == 'T1':
-                        if image[i][j] >= 210 and image[i][j] < 255:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 150 and image[i][j] < 180:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 70  and image[i][j] < 100:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 0 and image[i][j] < 30:
-                            image[i][j] = image[i][j] + increaseFactor
-                    elif self.ui.cbProperty.currentText() == 'T2':
-                        if image[i][j] > 240 and image[i][j] <= 255:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 200 and image[i][j] < 230:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 50 and image[i][j] < 80:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 0 and image[i][j] < 30:
-                            image[i][j] = image[i][j] + increaseFactor
-                    elif self.ui.cbProperty.currentText() == 'PD':
-                        if image[i][j] >= 140 and image[i][j] < 170:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 120 and image[i][j] < 135:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 50 and image[i][j] < 80:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 30 and image[i][j] < 45:
-                            image[i][j] = image[i][j] + increaseFactor
-                    else:
-                        if image[i][j] >= 140 and image[i][j] < 170:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 120 and image[i][j] < 135:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 50 and image[i][j] < 80:
-                            image[i][j] = image[i][j] + increaseFactor
-                        elif image[i][j] >= 30 and image[i][j] < 45:
-                            image[i][j] = image[i][j] + increaseFactor
-
-
-        else:
-            for i in range(image.shape[0]):
-                for j in range(image.shape[1]):
-                    if self.ui.cbProperty.currentText() == 'T1':
-                        if image[i][j] > 210 and image[i][j] <= 255:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 150 and image[i][j] <= 180:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 70 and image[i][j] <= 100:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 0 and image[i][j] <= 30:
-                            image[i][j] = image[i][j] + decreaseFactor
-                    elif self.ui.cbProperty.currentText() == 'T2':
-                        if image[i][j] > 240 and image[i][j] <= 255:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 200 and image[i][j] <= 230:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 50 and image[i][j] <= 80:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 0 and image[i][j] <= 30:
-                            image[i][j] = image[i][j] + decreaseFactor
-                    elif self.ui.cbProperty.currentText() == 'PD':
-                        if image[i][j] > 140 and image[i][j] <= 170:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 120 and image[i][j] <= 135:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 50 and image[i][j] <= 80:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 30 and image[i][j] <= 45:
-                            image[i][j] = image[i][j] + decreaseFactor
-                    else:
-                        if image[i][j] > 140 and image[i][j] <= 170:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 120 and image[i][j] <= 135:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 50 and image[i][j] <= 80:
-                            image[i][j] = image[i][j] + decreaseFactor
-                        elif image[i][j] > 30 and image[i][j] <= 45:
-                            image[i][j] = image[i][j] + decreaseFactor
-
-        self.displayPhantom(image)
-
+        try:
+            image = Image.fromarray(self.cvImg, 'L')
+            brightness = ImageEnhance.Brightness(image)
+            contrast = ImageEnhance.Contrast(image)
+            if event.angleDelta().y() > 0:
+                if self.factorB<10:
+                    self.factorB += 1
+                    im = brightness.enhance(self.factorB)
+            else:
+                if self.factorB>1:
+                    self.factorB -= 1
+                    im = brightness.enhance(self.factorB)
+            if event.angleDelta().x() > 0:
+                if self.factorC<10:
+                    self.factorC += 1
+                    im = contrast.enhance(self.factorC)
+            else:
+                if self.factorC>1:
+                    self.factorC -= 1
+                    im = contrast.enhance(self.factorC)
+            im = np.array(im)
+            self.displayPhantom(im)
+        except:
+            pass
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

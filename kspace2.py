@@ -61,13 +61,13 @@ def flip (TE,TR,T1,T2,pd,filpAngle):
     img=np.round(np.abs(img))
     return img
     
-#pd = Image.open('pd.png').convert('L')
-#pd = np.asarray(pd)
-#T2 = Image.open('T2.png').convert('L')
-#T2 = np.asarray(T2)
-#T1 = Image.open('face.png').convert('L')
-#T1 = np.asarray(T2)
+pd = Image.open('pd.png').convert('L')
+pd = np.asarray(pd)
+T2 = Image.open('T2.png').convert('L')
+T2 = np.asarray(T2)
+T1 = Image.open('face.png').convert('L')
+T1 = np.asarray(T2)
 #
-#image=Image.fromarray(flip (10,5000,T1,T2,pd,90))
-#image.show()
+image=Image.fromarray(flip (10,5000,T1,T2,pd,90))
+image.show()
     

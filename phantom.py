@@ -64,13 +64,14 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.cvImg = cv2.resize(self.cvImg,(size,size))
                 self.cvImgT1 = properties.t1(self.cvImg)
                 self.cvImgT2 = properties.t2(self.cvImg)
+                self.cvImgPD = properties.pd(self.cvImg)
                 prop = self.ui.cbProperty.currentText()
                 if prop=='T1':
                     self.cvImg = self.cvImgT1
                 elif prop=='T2':
                     self.cvImg = self.cvImgT2
                 else:
-                    self.cvImg = properties.pd(self.cvImg)
+                    self.cvImg = self.cvImgPD
                 print(type(self.cvImg))
                 self.displayPhantom(self.cvImg)
         except:
@@ -112,8 +113,17 @@ class ApplicationWindow(QtWidgets.QMainWindow):
         self.ui.gvRecovery.clear()
         self.getPhantom()
 
-    def cbProperty_currentTextChanged(self):
-        self.getPhantom()
+    def cbProperty_currentTextChanged(self, value):
+        try:
+            if value=='T1':
+                self.cvImg = self.cvImgT1
+            elif value=='T2':
+                self.cvImg = self.cvImgT2
+            else:
+                self.cvImg = self.cvImgPD
+            self.displayPhantom(self.cvImg)
+        except:
+            pass
 
     def sbGraphs_valueChanged(self, value):
         self.ui.gvDecay.setXRange(0,value)

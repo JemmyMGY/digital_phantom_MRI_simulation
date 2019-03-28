@@ -8,6 +8,8 @@ import math
 import numpy as np
 import cv2
 import properties
+import kspace
+import qimage2ndarray
 
 
 class ApplicationWindow(QtWidgets.QMainWindow):
@@ -62,6 +64,7 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 size = int(self.ui.cbSize.currentText())
                 self.cvImg = cv2.imread(self.fileName,0)
                 self.cvImg = cv2.resize(self.cvImg,(size,size))
+                self.original = self.cvImg
                 self.cvImgT1 = properties.t1(self.cvImg)
                 self.cvImgT2 = properties.t2(self.cvImg)
                 self.cvImgPD = properties.pd(self.cvImg)
@@ -70,14 +73,30 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                     self.cvImg = self.cvImgT1
                 elif prop=='T2':
                     self.cvImg = self.cvImgT2
-                else:
+                elif prop=='PD':
                     self.cvImg = self.cvImgPD
                 print(type(self.cvImg))
+                #self.rfPulse()
                 self.displayPhantom(self.cvImg)
+                QtWidgets.QApplication.processEvents()
         except:
             pass
         
-                
+    def rfPulse(self):
+        te = self.ui.sbTE.value()
+        tr = self.ui.sbTR.value()
+        fa = self.ui.sbFA.value()
+        t1 = cv2.resize(self.cvImgT1,(64,64))
+        t2 = cv2.resize(self.cvImgT2,(64,64))
+        pd = cv2.resize(self.cvImgPD,(64,64))
+        QtWidgets.QApplication.processEvents()
+        image = kspace.flip(te, tr, t1, t2, pd, fa)
+        qimg = QImage()
+        qimg = qimage2ndarray.array2qimage(image)
+        pix = QPixmap(qimg)
+        self.ui.lblImage.setPixmap(pix)
+        
+
     def displayPhantom(self, image):
         try:
             self.highlight.end()
@@ -119,8 +138,10 @@ class ApplicationWindow(QtWidgets.QMainWindow):
                 self.cvImg = self.cvImgT1
             elif value=='T2':
                 self.cvImg = self.cvImgT2
-            else:
+            elif value=='PD':
                 self.cvImg = self.cvImgPD
+            else:
+                self.cvImg = self.original
             self.displayPhantom(self.cvImg)
         except:
             pass

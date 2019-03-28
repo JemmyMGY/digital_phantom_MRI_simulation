@@ -29,6 +29,7 @@ class Ui_MainWindow(object):
         self.cbProperty.addItem("")
         self.cbProperty.addItem("")
         self.cbProperty.addItem("")
+        self.cbProperty.addItem("")
         self.gridLayout.addWidget(self.cbProperty, 0, 3, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(57, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem, 0, 2, 1, 1)
@@ -92,9 +93,13 @@ class Ui_MainWindow(object):
         self.gridLayout_7.setObjectName("gridLayout_7")
         self.lblImage = QtWidgets.QLabel(self.tab_2)
         self.lblImage.setText("")
+        self.lblImage.setScaledContents(True)
         self.lblImage.setAlignment(QtCore.Qt.AlignCenter)
         self.lblImage.setObjectName("lblImage")
-        self.gridLayout_7.addWidget(self.lblImage, 0, 0, 1, 1)
+        self.gridLayout_7.addWidget(self.lblImage, 1, 0, 1, 1)
+        self.pbStart = QtWidgets.QPushButton(self.tab_2)
+        self.pbStart.setObjectName("pbStart")
+        self.gridLayout_7.addWidget(self.pbStart, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_2, "")
         self.gridLayout.addWidget(self.tabWidget, 1, 5, 2, 8)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -108,7 +113,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.cbSize.setCurrentIndex(0)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -123,6 +128,7 @@ class Ui_MainWindow(object):
         self.cbProperty.setItemText(0, _translate("MainWindow", "T1"))
         self.cbProperty.setItemText(1, _translate("MainWindow", "T2"))
         self.cbProperty.setItemText(2, _translate("MainWindow", "PD"))
+        self.cbProperty.setItemText(3, _translate("MainWindow", "Ori"))
         self.pbBrowse.setText(_translate("MainWindow", "Browse"))
         self.sbTE.setStatusTip(_translate("MainWindow", "TE"))
         self.sbTR.setStatusTip(_translate("MainWindow", "TR"))
@@ -131,6 +137,7 @@ class Ui_MainWindow(object):
         self.gvDecay.setStatusTip(_translate("MainWindow", "Decay curve"))
         self.gvRecovery.setStatusTip(_translate("MainWindow", "Recovery curve"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "D/R Curves"))
+        self.pbStart.setText(_translate("MainWindow", "Start Sequence"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Image"))
 
 from pyqtgraph import PlotWidget
